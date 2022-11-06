@@ -2,20 +2,25 @@
 #define OCTOPET_H
 
 #include <Arduino.h>
+#include <ArduinoJson.h>
+#include <UUID.h>
 
 class OctoPet {
   private:
     bool builtinLedOn = false;
-    unsigned long millisTask1 = millis();
-    unsigned long millisTask2 = millis();
+    unsigned long millisTaskDiscovery = 10001;
+    unsigned long millisTaskPeriodic = 10001;
+    UUID uuid;
+    uint32_t extractEntropy();
 
   public:
     OctoPet();
     void setup();
     void loop();
     void blink();
-    void task1();
-    void task2();
+    void taskDiscovery();
+    void taskPeriodic();
+    char * uuidv4();
 };
 
 #endif
