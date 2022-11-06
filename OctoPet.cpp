@@ -41,12 +41,26 @@ void OctoPet::taskDiscovery() {
   if((millis() - this->millisTaskDiscovery) > 10000){
     this->millisTaskDiscovery = millis();
     DynamicJsonDocument doc(1024);
-    doc["header"]["event"] = "discovery";
-    doc["header"]["id"] = this->uuidv4();
-    doc["sensor"] = "gps";
-    doc["time"]   = 1351824120;
-    doc["data"][0] = 48.756080;
-    doc["data"][1] = 2.302038;
+    doc[F("header")][F("eventType")] = F("discovery");
+    doc[F("header")][F("eventId")] = this->uuidv4();
+    doc[F("header")][F("triggerTime")] = "2022-01-01T00:00:00.0";
+    doc[F("device")][F("id")] = "abc123";
+    doc[F("device")][F("softwareVersion")] = "1.0.0";    
+    doc[F("device")][F("hardwareVersion")] = "1.0.0";
+    /*doc[F("device")][F("secondaryMemory")]["cardType"] = "1.0.0";
+    doc[F("device")][F("secondaryMemory")]["clusters"] = "1.0.0";
+    doc[F("device")][F("secondaryMemory")]["blocksPerCluster"] = "1.0.0";
+    doc[F("device")][F("secondaryMemory")]["totalBlocks"] = "1.0.0";
+    doc[F("device")][F("secondaryMemory")][F("volumeType")] = "1.0.0";
+    doc[F("device")][F("secondaryMemory")]["volumeSize"] = "1.0.0";*/
+    doc[F("rollCallData")][0][F("id")] = "pow234";
+    doc[F("rollCallData")][0][F("sensor")] = "DHT22";
+    doc[F("rollCallData")][0][F("address")] = "D2";
+    doc[F("rollCallData")][0][F("category")] = "room";
+    doc[F("rollCallData")][1][F("id")] = "03392";
+    doc[F("rollCallData")][1][F("sensor")] = "PH0";
+    doc[F("rollCallData")][1][F("address")] = "A1";
+    doc[F("rollCallData")][1][F("category")] = "water";
     serializeJson(doc, Serial);
     Serial.println();
   }
@@ -56,10 +70,25 @@ void OctoPet::taskPeriodic() {
   if((millis() - this->millisTaskPeriodic) > 1000){
     this->millisTaskPeriodic = millis();
     DynamicJsonDocument doc(1024);
-    doc["header"]["event"] = "periodic";
-    doc["header"]["id"] = this->uuidv4();
-    doc["temperature"] = 40;
-    serializeJson(doc, Serial);
+    doc[F("header")][F("eventType")] = F("periodic");
+    doc[F("header")][F("eventId")] = this->uuidv4();
+    doc[F("header")][F("triggerTime")] = "2022-01-01T00:00:00.0";
+    doc[F("device")][F("id")] = "abc123";
+    doc[F("device")][F("softwareVersion")] = "1.0.0";    
+    doc[F("device")][F("hardwareVersion")] = "1.0.0";
+    doc[F("device")][F("secondaryMemory")][F("type")] = "SD2";
+    doc[F("device")][F("secondaryMemory")][F("volumeType")] = "FAT32";
+    doc[F("device")][F("secondaryMemory")][F("size")] = 1024;
+    doc[F("deviceSample")][F("freeMemory")] = 1;
+    doc[F("deviceSample")][F("batteryPowered")] = false;
+    doc[F("roomSample")][F("temperature")] = 40;
+    doc[F("roomSample")][F("relativeHumidity")] = 80;
+    doc[F("roomSample")][F("atmosphericPressure")] = 10;
+    doc[F("roomSample")][F("altitude")] = 410;
+    doc[F("waterSample")][F("temperature")] = 25;
+    doc[F("waterSample")][F("totalDissolvedSolids")] = 25;
+    doc[F("waterSample")][F("waterLevel")] = "high";
+    serializeJson(doc, Serial); // https://arduinojson.org/v6/api/json/serializejson/
     Serial.println();
   }
 }
